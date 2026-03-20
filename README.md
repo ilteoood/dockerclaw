@@ -12,7 +12,7 @@ Its purpose is to provide a ready-to-run [ZeroClaw](https://github.com/zeroclaw-
 
 ## Configuration
 
-The container is configured through a ZeroClaw config file mounted at `/zeroclaw-data/.zeroclaw/config.toml`.
+The container is configured through a ZeroClaw config file mounted at `/root/.zeroclaw/config.toml`.
 
 ### Custom initialization
 
@@ -25,7 +25,7 @@ You can run this image using [Docker compose](https://docs.docker.com/compose/) 
 Or you can use the standard `docker run` command:
 
 ```sh
-docker run --name dockerclaw -v /path/to/zeroclaw-data:/zeroclaw-data -p 42617:42617 ilteoood/dockerclaw
+docker run --name dockerclaw -v /path/to/home:/root -p 42617:42617 ilteoood/dockerclaw
 ```
 
 Once running, the ZeroClaw gateway is accessible at `http://localhost:42617`.
