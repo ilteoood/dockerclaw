@@ -5,16 +5,15 @@ configs:
     file: /path/to/your/init/script
 
 volumes:
+  zeroclaw-data:
   workspace:
 
 services:
   dockerclaw:
     image: ilteoood/dockerclaw
     container_name: dockerclaw
-    environment:
-      - API_KEY=your-api-key-here
-      - PROVIDER=openrouter
     volumes:
+      - zeroclaw-data:/zeroclaw-data
       - workspace:/home/workspace
     configs:
       - source: init_script

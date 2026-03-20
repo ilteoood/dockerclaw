@@ -12,17 +12,7 @@ Its purpose is to provide a ready-to-run [ZeroClaw](https://github.com/zeroclaw-
 
 ## Configuration
 
-The container is configured through environment variables.
-
-### Environment variables
-
-| Name | Mandatory | Default value | Description |
-|------|-----------|---------------|-------------|
-| API_KEY | Yes | - | Your LLM provider API key |
-| PROVIDER | No | `openrouter` | LLM provider (`openrouter`, `openai`, `anthropic`, `ollama`) |
-| ZEROCLAW_MODEL | No | - | Model override |
-| ZEROCLAW_GATEWAY_PORT | No | `42617` | Gateway port inside the container |
-| ZEROCLAW_ALLOW_PUBLIC_BIND | No | `true` | Allow public bind inside Docker |
+The container is configured through a ZeroClaw config file mounted at `/zeroclaw-data/.zeroclaw/config.toml`.
 
 ### Custom initialization
 
@@ -35,7 +25,7 @@ You can run this image using [Docker compose](https://docs.docker.com/compose/) 
 Or you can use the standard `docker run` command:
 
 ```sh
-docker run --name dockerclaw -e API_KEY=your-api-key-here -p 42617:42617 ilteoood/dockerclaw
+docker run --name dockerclaw -v /path/to/zeroclaw-data:/zeroclaw-data -p 42617:42617 ilteoood/dockerclaw
 ```
 
 Once running, the ZeroClaw gateway is accessible at `http://localhost:42617`.
