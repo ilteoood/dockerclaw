@@ -1,0 +1,24 @@
+version: "2"
+
+configs:
+  init_script:
+    file: /path/to/your/init/script
+
+volumes:
+  home:
+  workspace:
+
+services:
+  dockerclaw:
+    image: ilteoood/dockerclaw
+    container_name: dockerclaw
+    volumes:
+      - home:/root
+      - workspace:/home/workspace
+    configs:
+      - source: init_script
+        target: /usr/local/bin/init
+        mode: 0755
+    ports:
+      - "42617:42617"
+    restart: unless-stopped
