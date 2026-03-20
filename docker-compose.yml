@@ -1,0 +1,25 @@
+version: "2"
+
+configs:
+  init_script:
+    file: /path/to/your/init/script
+
+volumes:
+  workspace:
+
+services:
+  dockerclaw:
+    image: ilteoood/dockerclaw
+    container_name: dockerclaw
+    environment:
+      - API_KEY=your-api-key-here
+      - PROVIDER=openrouter
+    volumes:
+      - workspace:/home/workspace
+    configs:
+      - source: init_script
+        target: /usr/local/bin/init
+        mode: 0755
+    ports:
+      - "42617:42617"
+    restart: unless-stopped

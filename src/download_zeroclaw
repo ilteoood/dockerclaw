@@ -1,0 +1,35 @@
+#!/bin/bash
+
+set -e
+
+case $1 in
+  amd64)
+    TARGET="x86_64-unknown-linux-gnu"
+    ;;
+  arm64)
+    TARGET="aarch64-unknown-linux-gnu"
+    ;;
+  *)
+    echo "Unsupported architecture: $1"
+    exit 1
+    ;;
+esac
+
+echo "Downloading ZeroClaw for Linux ${TARGET}..."
+
+DOWNLOAD_URL="https://github.com/zeroclaw-labs/zeroclaw/releases/latest/download/zeroclaw-${TARGET}.tar.gz"
+
+EXTRACT_DIR="$(mktemp -d)"
+curl -fsSL "${DOWNLOAD_URL}" -o "${EXTRACT_DIR}/zeroclaw.tar.gz"
+tar -xzf "${EXTRACT_DIR}/zeroclaw.tar.gz" -C "${EXTRACT_DIR}"
+
+BINARY="${EXTRACT_DIR}/zeroclaw"
+if [ ! -x "${BINARY}" ]; then
+  BINARY="$(find "${EXTRACT_DIR}" -maxdepth 2 -type f -name zeroclaw | head -n 1)"
+fi
+
+install -m 0755 "${BINARY}" /usr/local/bin/zeroclaw
+rm -rf "${EXTRACT_DIR}"
+
+echo "ZeroClaw installed successfully"
+zeroclaw --version
