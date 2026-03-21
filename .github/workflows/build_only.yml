@@ -13,11 +13,29 @@ jobs:
         steps:
             - name: Checkout master
               uses: actions/checkout@master
+            - name: Get latest zeroclaw tag
+              id: get_tag
+              run: |
+                TAG=$(curl -fsSL "https://api.github.com/repos/zeroclaw-labs/zeroclaw/releases/latest" | \
+                  sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p')
+                if [ -z "$TAG" ]; then
+                  echo "ERROR: Could not fetch latest zeroclaw tag" >&2
+                  exit 1
+                fi
+                echo "Resolved latest zeroclaw tag: ${TAG}"
+                echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+            - name: Clone zeroclaw at latest stable tag
+              uses: actions/checkout@master
+              with:
+                repository: zeroclaw-labs/zeroclaw
+                ref: ${{ steps.get_tag.outputs.tag }}
+                path: zeroclaw
             - name: Build image
               uses: ilteoood/docker_buildx@master
               with:
                 tag: latest
                 platform: linux/amd64,linux/arm64
                 imageName: ilteoood/dockerclaw
-                dockerFile: Dockerfile.debian
+                dockerFile: zeroclaw/Dockerfile.debian
                 buildArg: ZEROCLAW_CARGO_FEATURES=channel-matrix,channel-lark,memory-postgres,whatsapp-web
+                context: zeroclaw
