@@ -1,26 +1,61 @@
-name: Build and publish image
+name: Rust Build and Test
+
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - main
   schedule:
-    - cron: '0 3 * * 1'
+    - cron: '0 3 * * *'
   workflow_dispatch:
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        name: Build and publish image job
-        permissions:
-            contents: read
-        steps:
-            - name: Checkout master
-              uses: actions/checkout@master
-            - name: Build and publish image
-              uses: ilteoood/docker_buildx@master
-              with:
-                tag: latest
-                platform: linux/arm64
-                imageName: ilteoood/dockerclaw
-                publish: true
-                dockerUser: ilteoood
-                dockerPassword: ${{ secrets.DOCKER_HUB_PASSWORD }}
+  build:
+    strategy:
+      matrix:
+        platform:
+          - target: aarch64-unknown-linux-musl
+          - target: x86_64-unknown-linux-musl
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          repository: zeroclaw-labs/zeroclaw
+
+
+      - name: Build and test binary
+        uses: houseabsolute/actions-rust-cross@v1
+        with:
+          command: build
+          target: ${{ matrix.platform.target }}
+          args: "--release --locked --features skill-creation,whatsapp-web,browser-native,rag-pdf,plugins-wasm"
+          strip: true
+        env:
+          CROSS_CONTAINER_OPTS: "-v /var/run/docker.sock:/var/run/docker.sock"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: zeroclaw-${{ matrix.platform.target }}
+          path: ./target/${{ matrix.platform.target }}/release/zeroclaw
+          retention-days: 1
+
+  docker_image:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Build and publish image
+        uses: ilteoood/docker_buildx@master
+        with:
+          tag: latest
+          platform: linux/amd64,linux/arm64
+          imageName: ilteoood/dockerclaw
+          publish: true
+          dockerUser: ilteoood
+          dockerPassword: ${{ secrets.DOCKER_HUB_PASSWORD }}
