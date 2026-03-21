@@ -21,7 +21,7 @@ RUN npm ci --ignore-scripts 2>/dev/null || npm install --ignore-scripts
 RUN npm run build
 
 # ── Stage 2: Build ───────────────────────────────────────────────
-FROM rust:1.93.1-bookworm AS builder
+FROM rust:1.94-bookworm AS builder
 
 WORKDIR /app
 
@@ -36,8 +36,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY --from=source /source .
 COPY --from=web-builder /web/dist web/dist
 
-# Build with all features enabled
-RUN cargo build --release --locked --all-features && \
+# Build with some features enabled
+RUN cargo build --release --locked --features skill-creation,whatsapp-web,browser-native,rag-pdf,plugins-wasm && \
     cp target/release/zeroclaw /app/zeroclaw-bin && \
     strip /app/zeroclaw-bin
 
