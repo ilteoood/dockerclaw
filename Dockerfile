@@ -21,7 +21,7 @@ RUN npm ci --ignore-scripts 2>/dev/null || npm install --ignore-scripts
 RUN npm run build
 
 # ── Stage 2: Build ───────────────────────────────────────────────
-FROM rust:1.94-bookworm AS builder
+FROM rust:1.93.1-bookworm AS builder
 
 WORKDIR /app
 
