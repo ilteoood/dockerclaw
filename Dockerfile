@@ -3,9 +3,10 @@
 # ── Stage 0: Download source ────────────────────────────────────
 FROM debian:bookworm-slim AS source
 
-ARG ZEROCLAW_VERSION=v0.5.4
-
 RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certificates && \
+    ZEROCLAW_VERSION=$(curl -fsSL "https://api.github.com/repos/zeroclaw-labs/zeroclaw/releases/latest" | \
+      sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p') && \
+    echo "Resolved latest release: ${ZEROCLAW_VERSION}" && \
     mkdir -p /source && \
     curl -fsSL "https://github.com/zeroclaw-labs/zeroclaw/archive/refs/tags/${ZEROCLAW_VERSION}.tar.gz" | \
     tar -xzf - --strip-components=1 -C /source && \
@@ -58,7 +59,7 @@ RUN apt-get update && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /app/zeroclaw-bin /usr/local/bin/zeroclaw
-COPY src/entrypoint src/init /usr/local/bin/
+COPY src/* /usr/local/bin/
 
 WORKDIR /home/workspace
 
