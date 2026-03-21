@@ -17,11 +17,21 @@ jobs:
           - target: x86_64-unknown-linux-musl
     runs-on: ubuntu-latest
     steps:
+      - name: Get latest release
+        id: latest_release
+        run: |
+          TAG=$(curl -sf -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/zeroclaw-labs/zeroclaw/releases/latest | jq -r '.tag_name')
+          if [ -z "$TAG" ] || [ "$TAG" = "null" ]; then
+            echo "Failed to fetch latest release tag" >&2
+            exit 1
+          fi
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+
       - name: Checkout code
         uses: actions/checkout@v6
         with:
           repository: zeroclaw-labs/zeroclaw
-
+          ref: ${{ steps.latest_release.outputs.tag }}
 
       - name: Build and test binary
         uses: houseabsolute/actions-rust-cross@v1
