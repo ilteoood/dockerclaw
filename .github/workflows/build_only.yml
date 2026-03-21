@@ -6,7 +6,7 @@ on:
 
 jobs:
     build:
-        runs-on: ubuntu-latest-4-cores
+        runs-on: ubuntu-latest
         name: Build only image job
         permissions:
             contents: read
@@ -19,3 +19,5 @@ jobs:
                 tag: latest
                 platform: linux/amd64,linux/arm64
                 imageName: ilteoood/dockerclaw
+                dockerFile: Dockerfile.debian
+                buildArg: ZEROCLAW_CARGO_FEATURES=channel-matrix,channel-lark,memory-postgres,whatsapp-web
