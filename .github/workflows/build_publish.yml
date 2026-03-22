@@ -1,4 +1,4 @@
-name: Rust Build and Test
+name: ZeroClaw
 
 on:
   push:
@@ -76,7 +76,7 @@ jobs:
         with:
           tag: latest
           platform: linux/amd64,linux/arm64
-          imageName: ilteoood/dockerclaw
+          imageName: ilteoood/zeroclaw
           publish: true
           dockerUser: ilteoood
           dockerPassword: ${{ secrets.DOCKER_HUB_PASSWORD }}
