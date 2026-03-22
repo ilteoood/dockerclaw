@@ -44,7 +44,7 @@ jobs:
         working-directory: web
         run: npm ci && npm run build
 
-      - name: Build and test binary
+      - name: Build binary
         uses: houseabsolute/actions-rust-cross@v1
         with:
           command: build
