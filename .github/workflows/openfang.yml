@@ -41,7 +41,7 @@ jobs:
         with:
           command: build
           target: ${{ matrix.platform.target }}
-          args: "--release --locked --bin openfang"
+          args: "--release --bin openfang"
           strip: true
         env:
           CROSS_CONTAINER_OPTS: "-v /var/run/docker.sock:/var/run/docker.sock"
