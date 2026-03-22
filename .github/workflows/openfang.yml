@@ -36,6 +36,9 @@ jobs:
           repository: RightNow-AI/openfang
           ref: ${{ steps.latest_release.outputs.tag }}
 
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y libssl-dev
+
       - name: Build binary
         uses: houseabsolute/actions-rust-cross@v1
         with:
