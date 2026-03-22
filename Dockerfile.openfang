@@ -1,0 +1,10 @@
+FROM alpine:latest AS builder
+ARG TARGETARCH
+WORKDIR /builder
+COPY . .
+RUN ./scripts/binary_openfang.sh $TARGETARCH
+
+FROM ubuntu:24.04
+COPY --from=builder --chmod=755 /builder/openfang /usr/local/bin/openfang
+
+ENTRYPOINT [ "openfang" ]
