@@ -9,9 +9,9 @@ volumes:
   workspace:
 
 services:
-  dockerclaw:
-    image: ilteoood/dockerclaw
-    container_name: dockerclaw
+  zeroclaw:
+    image: ilteoood/zeroclaw
+    container_name: zeroclaw
     volumes:
       - home:/root
       - workspace:/home/workspace

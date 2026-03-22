@@ -1,8 +1,8 @@
-# dockerclaw
+# zeroclaw
 
 Docker image for [ZeroClaw](https://github.com/zeroclaw-labs/zeroclaw) — Personal AI Assistant. Zero overhead. Zero compromise. 100% Rust. 100% Agnostic.
 
-![Build only image](https://github.com/ilteoood/dockerclaw/workflows/Build%20only%20image/badge.svg?branch=main)
+![ZeroClaw](https://github.com/ilteoood/dockerclaw/workflows/ZeroClaw/badge.svg?branch=main)
 
 ------------------------------------------------
 
@@ -25,7 +25,7 @@ You can run this image using [Docker compose](https://docs.docker.com/compose/) 
 Or you can use the standard `docker run` command:
 
 ```sh
-docker run --name dockerclaw -v /path/to/home:/root -p 42617:42617 ilteoood/dockerclaw
+docker run --name zeroclaw -v /path/to/home:/root -p 42617:42617 ilteoood/zeroclaw
 ```
 
 Once running, the ZeroClaw gateway is accessible at `http://localhost:42617`.
