@@ -33,6 +33,17 @@ jobs:
           repository: zeroclaw-labs/zeroclaw
           ref: ${{ steps.latest_release.outputs.tag }}
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Build web dashboard
+        working-directory: web
+        run: npm ci && npm run build
+
       - name: Build and test binary
         uses: houseabsolute/actions-rust-cross@v1
         with:
