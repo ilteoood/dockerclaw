@@ -2,7 +2,7 @@ FROM alpine:latest AS builder
 ARG TARGETARCH
 WORKDIR /builder
 COPY . .
-RUN ./scripts/binary.sh $TARGETARCH
+RUN ./scripts/binary_zeroclaw.sh $TARGETARCH
 
 FROM ubuntu:24.04
 COPY --from=builder --chmod=755 /builder/zeroclaw /usr/local/bin/zeroclaw
