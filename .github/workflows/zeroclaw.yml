@@ -8,8 +8,13 @@ on:
     - cron: '0 3 * * *'
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   build:
+    outputs:
+      tag: ${{ steps.latest_release.outputs.tag }}
     strategy:
       matrix:
         platform:
@@ -78,6 +83,7 @@ jobs:
           platform: linux/amd64,linux/arm64
           imageName: ilteoood/zeroclaw
           dockerFile: Dockerfile.zeroclaw
+          label: version=${{ needs.build.outputs.tag }}
           publish: true
           dockerUser: ilteoood
           dockerPassword: ${{ secrets.DOCKER_HUB_PASSWORD }}
