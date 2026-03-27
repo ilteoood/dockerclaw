@@ -5,6 +5,8 @@ COPY . .
 RUN ./scripts/binary_zeroclaw.sh $TARGETARCH
 
 FROM ubuntu:24.04
+ARG version
+LABEL version=$version
 COPY --from=builder --chmod=755 /builder/zeroclaw /usr/local/bin/zeroclaw
 COPY src/* /usr/local/bin/
 

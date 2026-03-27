@@ -13,6 +13,8 @@ permissions:
 
 jobs:
   build:
+    outputs:
+      tag: ${{ steps.latest_release.outputs.tag }}
     strategy:
       matrix:
         platform:
@@ -70,6 +72,7 @@ jobs:
           platform: linux/amd64,linux/arm64
           imageName: ilteoood/openfang
           dockerFile: Dockerfile.openfang
+          buildArg: version=${{ needs.build.outputs.tag }}
           publish: true
           dockerUser: ilteoood
           dockerPassword: ${{ secrets.DOCKER_HUB_PASSWORD }}
