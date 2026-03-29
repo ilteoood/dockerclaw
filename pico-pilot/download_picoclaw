@@ -1,0 +1,29 @@
+#!/bin/bash
+
+set -e
+
+case $1 in
+  amd64)
+    ARCH="x86_64"
+    ;;
+  arm64)
+    ARCH="arm64"
+    ;;
+  *)
+    echo "Unsupported architecture: $1"
+    exit 1
+    ;;
+esac
+
+echo "Downloading PicoClaw for Linux ${ARCH}..."
+
+DOWNLOAD_URL="https://github.com/sipeed/picoclaw/releases/latest/download/picoclaw_Linux_${ARCH}.tar.gz"
+
+curl -fsSL "${DOWNLOAD_URL}" -o /tmp/picoclaw.tar.gz
+tar -xzf /tmp/picoclaw.tar.gz -C /tmp
+mv /tmp/picoclaw /usr/local/bin/picoclaw
+chmod +x /usr/local/bin/picoclaw
+rm /tmp/picoclaw.tar.gz
+
+echo "PicoClaw installed successfully"
+picoclaw version

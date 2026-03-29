@@ -3,6 +3,8 @@ version: "2"
 configs:
   init_script:
     file: /path/to/your/init/script
+  picoclaw_config:
+    file: /path/to/your/config.json
 
 volumes:
   home:
@@ -21,4 +23,19 @@ services:
         mode: 0755
     ports:
       - "42617:42617"
+    restart: unless-stopped
+  pico-pilot:
+    image: ilteoood/pico-pilot
+    container_name: pico-pilot
+    environment:
+      - PICOCLAW_MODE=gateway
+    volumes:
+      - workspace:/home/workspace
+    configs:
+      - source: init_script
+        target: /usr/local/bin/init
+        mode: 0755
+      - source: picoclaw_config
+        target: /root/.picoclaw/config.json
+        mode: 0644
     restart: unless-stopped

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+set -e
+
+# Run user-customizable init script
+bash init
+
+# Start Copilot CLI in headless mode (background)
+echo "Starting GitHub Copilot CLI..."
+copilot --headless --port ${COPILOT_PORT:-4321} &
+COPILOT_PID=$!
+
+# Wait for Copilot to be ready
+sleep 3
+
+# Cleanup function
+cleanup() {
+    echo "Shutting down..."
+    kill $COPILOT_PID 2>/dev/null || true
+    exit 0
+}
+
+trap cleanup SIGTERM SIGINT
+
+# Start PicoClaw in foreground
+echo "Starting PicoClaw in ${PICOCLAW_MODE:-gateway} mode..."
+exec picoclaw ${PICOCLAW_MODE:-gateway}
