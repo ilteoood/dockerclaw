@@ -1,0 +1,41 @@
+name: PicoPilot
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 3 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  docker_image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Get latest PicoClaw release
+        id: latest_release
+        run: |
+          TAG=$(curl -sf -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/sipeed/picoclaw/releases/latest | jq -r '.tag_name')
+          if [ -z "$TAG" ] || [ "$TAG" = "null" ]; then
+            echo "Failed to fetch latest release tag" >&2
+            exit 1
+          fi
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Build and publish image
+        uses: ilteoood/docker_buildx@master
+        with:
+          tag: latest
+          platform: linux/amd64,linux/arm64
+          imageName: ilteoood/pico-pilot
+          dockerFile: Dockerfile.pico-pilot
+          label: version=${{ steps.latest_release.outputs.tag }}
+          publish: true
+          dockerUser: ilteoood
+          dockerPassword: ${{ secrets.DOCKER_HUB_PASSWORD }}

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+
+echo "Installing GitHub Copilot CLI..."
+
+curl -fsSL https://gh.io/copilot-install | PREFIX="/usr/local" bash
+
+echo "GitHub Copilot CLI installed successfully"
+copilot --version
