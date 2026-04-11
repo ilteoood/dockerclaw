@@ -7,4 +7,4 @@ bash /usr/local/bin/init
 
 # Start OpenClaw gateway
 echo "Starting OpenClaw gateway..."
-exec openclaw gateway --allow-unconfigured
+openclaw gateway
