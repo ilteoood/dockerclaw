@@ -1,0 +1,11 @@
+FROM ghcr.io/openclaw/openclaw:latest
+
+USER root
+
+COPY --chmod=755 openclaw/* /usr/local/bin/
+
+USER node
+
+EXPOSE 18789
+
+ENTRYPOINT ["entrypoint"]
