@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -e
+
+# Run user-customizable init script
+bash /usr/local/bin/init
+
+# Start OpenClaw gateway
+echo "Starting OpenClaw gateway..."
+exec openclaw gateway --allow-unconfigured
