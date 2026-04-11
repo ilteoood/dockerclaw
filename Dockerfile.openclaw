@@ -2,8 +2,7 @@ FROM ghcr.io/openclaw/openclaw:latest
 
 USER root
 
-COPY openclaw/* /usr/local/bin/
-RUN chmod +x /usr/local/bin/entrypoint /usr/local/bin/init
+COPY --chmod=755 openclaw/* /usr/local/bin/
 
 USER node
 
