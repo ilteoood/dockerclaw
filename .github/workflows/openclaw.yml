@@ -21,7 +21,7 @@ jobs:
       - name: Get latest OpenClaw release
         id: latest_release
         run: |
-          TAG=$(curl -sf -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/openclaw/openclaw/releases/latest | jq -r '.tag_name')Expand commentComment on line R24Resolved
+          TAG=$(curl -sf -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/openclaw/openclaw/releases/latest | jq -r '.tag_name')
           if [ -z "$TAG" ] || [ "$TAG" = "null" ]; then
             echo "Failed to fetch latest release tag" >&2
             exit 1
