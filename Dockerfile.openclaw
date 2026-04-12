@@ -4,6 +4,8 @@ USER root
 
 COPY --chmod=755 openclaw/* /usr/local/bin/
 
+RUN apt-get update && apt-get install sudo
+
 USER node
 
 EXPOSE 18789
