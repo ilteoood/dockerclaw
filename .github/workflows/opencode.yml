@@ -1,0 +1,41 @@
+name: OpenCode
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  docker_image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Get latest opencode-ai version
+        id: latest_release
+        run: |
+          TAG=$(npm view opencode-ai version)
+          if [ -z "$TAG" ]; then
+            echo "Failed to fetch latest version" >&2
+            exit 1
+          fi
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Build and publish image
+        uses: ilteoood/docker_buildx@master
+        with:
+          tag: latest
+          platform: linux/amd64,linux/arm64
+          imageName: ilteoood/opencode
+          dockerFile: Dockerfile.opencode
+          label: version=${{ steps.latest_release.outputs.tag }}
+          publish: true
+          dockerUser: ilteoood
+          dockerPassword: ${{ secrets.DOCKER_HUB_PASSWORD }}
