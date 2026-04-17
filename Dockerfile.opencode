@@ -1,0 +1,7 @@
+FROM node:lts-slim
+
+RUN npm i -g opencode-ai@latest
+
+COPY --chmod=755 opencode/* /usr/local/bin/
+
+ENTRYPOINT ["entrypoint"]

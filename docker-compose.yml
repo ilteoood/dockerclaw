@@ -39,3 +39,14 @@ services:
         target: /root/.picoclaw/config.json
         mode: 0644
     restart: unless-stopped
+  opencode:
+    image: ilteoood/opencode
+    container_name: opencode
+    volumes:
+      - home:/root
+      - workspace:/home/workspace
+    configs:
+      - source: init_script
+        target: /usr/local/bin/init
+        mode: 0755
+    restart: unless-stopped
