@@ -50,3 +50,14 @@ services:
         target: /usr/local/bin/init
         mode: 0755
     restart: unless-stopped
+  claude-code:
+    image: ilteoood/claude-code
+    container_name: claude-code
+    volumes:
+      - home:/root
+      - workspace:/home/workspace
+    configs:
+      - source: init_script
+        target: /usr/local/bin/init
+        mode: 0755
+    restart: unless-stopped

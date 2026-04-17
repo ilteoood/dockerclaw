@@ -1,0 +1,7 @@
+FROM node:lts-slim
+
+RUN npm i -g @anthropic-ai/claude-code@latest happy@latest
+
+COPY --chmod=755 claude-code/* /usr/local/bin/
+
+ENTRYPOINT ["entrypoint"]
