@@ -54,7 +54,7 @@ jobs:
         with:
           command: build
           target: ${{ matrix.platform.target }}
-          args: "--release --locked --features agent-runtime,whatsapp-web,rag-pdf"
+          args: "--release --locked --features agent-runtime,whatsapp-web,rag-pdf,browser-native,plugins-wasm"
           strip: true
         env:
           CROSS_CONTAINER_OPTS: "-v /var/run/docker.sock:/var/run/docker.sock"
