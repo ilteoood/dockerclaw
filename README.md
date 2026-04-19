@@ -36,7 +36,7 @@ Personal AI Assistant — zero overhead, zero compromise, 100% Rust, 100% agnost
 
 - **Dockerfile:** [`Dockerfile.zeroclaw`](./Dockerfile.zeroclaw)
 - **Architectures:** `linux/amd64`, `linux/arm64`
-- **Build process:** The Rust binary is cross-compiled from the latest upstream release with the following features enabled: `skill-creation`, `whatsapp-web`, `browser-native`, `rag-pdf`, `plugins-wasm`. A web dashboard (Node.js) is built and bundled alongside the binary.
+- **Build process:** The Rust binary is cross-compiled from the latest upstream release with all features enabled. A web dashboard (Node.js) is built and bundled alongside the binary.
 - **Configuration:** Mount a config file at `/root/.zeroclaw/config.toml`.
 - **Exposed port:** `42617`
 
