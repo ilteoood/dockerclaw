@@ -12,7 +12,11 @@ if [ ! -f /root/.zeroclaw/config.toml ]; then
 web_dist_dir = "/usr/local/share/zeroclaw/web"
 EOF
 elif ! grep -q 'web_dist_dir' /root/.zeroclaw/config.toml; then
-    printf '\n[gateway]\nweb_dist_dir = "/usr/local/share/zeroclaw/web"\n' >> /root/.zeroclaw/config.toml
+    if grep -q '^\[gateway\]' /root/.zeroclaw/config.toml; then
+        sed -i '/^\[gateway\]/a web_dist_dir = "/usr/local/share/zeroclaw/web"' /root/.zeroclaw/config.toml
+    else
+        printf '\n[gateway]\nweb_dist_dir = "/usr/local/share/zeroclaw/web"\n' >> /root/.zeroclaw/config.toml
+    fi
 fi
 
 # Run user-customizable init script
