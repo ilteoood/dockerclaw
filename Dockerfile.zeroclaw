@@ -6,6 +6,7 @@ RUN ./scripts/binary_zeroclaw.sh $TARGETARCH
 
 FROM ubuntu:24.04
 COPY --from=builder --chmod=755 /builder/zeroclaw /usr/local/bin/zeroclaw
+COPY --from=builder /builder/web-dist /usr/local/share/zeroclaw/web
 COPY src/* /usr/local/bin/
 
 ENTRYPOINT [ "entrypoint" ]

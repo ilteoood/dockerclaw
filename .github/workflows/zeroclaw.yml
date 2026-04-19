@@ -66,6 +66,14 @@ jobs:
           path: ./target/${{ matrix.platform.target }}/release/zeroclaw
           retention-days: 1
 
+      - name: Upload web dashboard
+        if: matrix.platform.target == 'x86_64-unknown-linux-musl'
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-dist
+          path: ./web/dist
+          retention-days: 1
+
   docker_image:
     runs-on: ubuntu-latest
     needs: build

@@ -2,9 +2,22 @@
 
 set -e
 
+# Ensure default configuration directory exists
+mkdir -p /root/.zeroclaw
+
+# Configure web dashboard path if not already set
+if [ ! -f /root/.zeroclaw/config.toml ]; then
+    cat > /root/.zeroclaw/config.toml << 'EOF'
+[gateway]
+web_dist_dir = "/usr/local/share/zeroclaw/web"
+EOF
+elif ! grep -q 'web_dist_dir' /root/.zeroclaw/config.toml; then
+    printf '\n[gateway]\nweb_dist_dir = "/usr/local/share/zeroclaw/web"\n' >> /root/.zeroclaw/config.toml
+fi
+
 # Run user-customizable init script
 bash /usr/local/bin/init
 
-# Start ZeroClaw in foreground
+# Start ZeroClaw in daemon mode
 echo "Starting ZeroClaw in daemon mode..."
 exec zeroclaw daemon
