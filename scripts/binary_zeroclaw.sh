@@ -16,3 +16,4 @@ case $1 in
 esac
 
 mv ./zeroclaw-${VARIANT}/zeroclaw ./zeroclaw
+mv ./web-dist-${VARIANT} ./web-dist
